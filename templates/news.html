@@ -1,0 +1,50 @@
+<head>
+    <title>News - Stocks Portal</title>
+    {{ bootstrap.load_css() }}
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/style.css') }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+</head>
+
+<body>
+
+    {% include "navbar.html" %}
+
+    {% if articles %}
+
+    <ul class="list-group m-5">
+
+        <small>{{articles|length}} articles found</small>
+
+        {% for article in articles %}
+
+        <li class="list-group-item">
+
+            <div class="row">
+                <div class="col-1">
+                    <img width="100%" src="{{article.urlToImage}}" alt="">
+                </div>
+                
+                <div class="col-11">
+                    <a target="_blank" href="{{article.url}}" class="font-weight-bold">{{article.title}}</a><br>
+                    <span class="text-muted">{{article.description}}</span><br>
+                    <small><span class="font-weight-bold">Published:</span> {{article.publishedAt}}</small>
+                </div>
+            </div>
+            
+        </li>
+
+        {% endfor %}
+    </ul>
+
+    {% else %}
+
+    <div class="col m-5" style="text-align:center">
+        <h3>No results articles found!</h3>
+    </div>
+
+    {% endif %}
+
+
+    {{ bootstrap.load_js() }}
+
+</body>

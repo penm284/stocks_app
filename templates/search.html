@@ -1,0 +1,81 @@
+<head>
+    <title>Search - Stocks Portal</title>
+    {{ bootstrap.load_css() }}
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/style.css') }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+</head>
+
+<body>
+
+    {% include "navbar.html" %}
+
+    {% if stocks %}
+
+    <ul class="list-group m-5">
+
+        <small>{{stocks|length}} results found</small>
+
+        {% for stock in stocks %}
+
+        <li class="list-group-item">
+
+            {{loop.index}}. <span class="font-weight-bold">{{stock.name}}</span> - {{stock.symbol}}
+
+            <span class="float-right favorite">
+
+                {% if stock.region == 'United States' %}
+
+                <input type="checkbox" id="star{{loop.index}}" value="1" onclick="updateFavorites('{{stock.symbol}}')"
+                    {% if stock.is_favorite %}checked{% else %}{% endif %} />
+                <label class="m-4" for="star{{loop.index}}"></label>
+
+                {% endif %}
+
+                <a class="btn btn-primary" href="{{ url_for('get_stock_info', symbol=stock.symbol) }}">
+                    View details
+                </a>
+
+            </span>
+
+            <br>
+
+            <small><span class="font-weight-bold">Region:</span> {{stock.region}}</small><br>
+            <small><span class="font-weight-bold">Market Open:</span> {{stock.marketOpen}}</small><br>
+            <small><span class="font-weight-bold">Market Close:</span> {{stock.marketClose}}</small>
+            <small><span class="font-weight-bold">Timezone:</span> {{stock.timezone}}</small>
+            <small><span class="font-weight-bold">Currency:</span> {{stock.currency}}</small>
+
+        </li>
+
+        {% endfor %}
+    </ul>
+
+    {% else %}
+
+    <div class="row justify-content-center">
+        <div class="col-4 alert alert-danger mt-5 p-5" style="text-align:center">
+            <h4>No results found for your query!</h4>
+            Go back <a href="{{ url_for('index') }}">home</a>
+        </div>
+    </div>
+
+    {% endif %}
+
+    {{ bootstrap.load_js() }}
+
+    <script>
+
+        function updateFavorites(selectedSymbol) {
+            // send a request, but don't refresh page
+            xhttp = new XMLHttpRequest();
+            requestUrl = `{{ url_for('update_favorites')}}?symbol=${selectedSymbol}`
+            xhttp.open("GET", requestUrl, true);
+            xhttp.send();
+        }
+
+        $(document).ready(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+    </script>
+
+</body>

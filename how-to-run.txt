@@ -1,0 +1,8 @@
+1. Run the following in the terminal:
+    a. pip install flask
+    b. pip install bootstrap-flask
+
+2. Now run the following in the project folder via terminal:
+    FLASK_APP=main.py flask run
+
+3. Open http://localhost:5000/ in browser

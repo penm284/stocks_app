@@ -1,0 +1,64 @@
+<head>
+  <title>{{symbol}} - Performance Graph</title>
+  {{ bootstrap.load_css() }}
+  <script src='../../static/chart.min.js'></script>
+  <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/style.css') }}">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+</head>
+
+<body>
+
+  {% include "navbar.html" %}
+
+  <div class="bodyCard shadow">
+    <small class="text-center">Go back to <a href="{{ url_for('get_stock_info', symbol=symbol) }}">details</a></small>
+    <h2 class="text-center">{{symbol}}</h2>
+    <h4 class="text-secondary text-center">As seen on: <span class="font-weight-bold">{{period}}</span></h4>
+    <canvas id="myChart" height="100"></canvas>
+  </div>  
+
+  {{ bootstrap.load_js() }}
+  
+  <script>
+   
+    // define the chart data
+    var chartData = {
+      labels: [
+        {% for item in labels %}
+          "{{item}}",
+        {% endfor %}],
+      datasets: [{
+        label: 'Price (USD)',
+        backgroundColor: "rgba(75,192,192,0.4)",
+        borderColor: "rgba(75,192,192,1)",
+      
+        data: [
+          {% for item in values %}
+            {{ item }},
+          {% endfor %}],
+      }]
+    }
+
+    // get chart canvas
+    var ctx = document.getElementById("myChart").getContext("2d");
+
+    // create the chart using the chart canvas
+    var myChart = new Chart(ctx, {
+      type: 'line',
+      data: chartData,
+      options: {
+        tooltips: {
+          enabled: true,
+          mode: 'single',
+          callbacks: {
+            label: function (tooltipItems, data) {
+              return '$' + tooltipItems.yLabel;
+            }
+          }
+        },
+      }
+    });
+
+  </script>
+
+</body>

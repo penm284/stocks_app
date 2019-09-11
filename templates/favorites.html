@@ -1,0 +1,163 @@
+<head>
+    <title>Popular Stocks - Stocks Portal</title>
+    {{ bootstrap.load_css() }}
+
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/style.css') }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+</head>
+
+<body>
+
+    {% include "navbar.html" %}
+
+    {% if stocks %}
+    <div class="bodyCard shadow">
+
+        <div class="table-responsive">
+
+            <p class="text-center mt-3">
+                My favorite stocks - Sorted by
+                <span class="font-weight-bold">
+                    {{sort_by}}
+                    {% if should_reverse ==1 %}descending
+                    {% else %}ascending
+                    {% endif %}
+                </span>
+                <br>
+            </p>
+
+            <table class="table table-striped">
+
+                <thead>
+
+                    <tr style="text-align:center">
+
+                        <th>Index</th>
+
+                        <th>
+
+                            <a href="{{ url_for('get_favorites', sortby='symbol') }}" data-toggle="tooltip"
+                                title="Sort by ascending symbol">
+                                <i class="fas fa-sort-alpha-down"></i>
+                            </a>
+
+                            Symbol
+
+                            <a href="{{ url_for('get_favorites', sortby='symbol', reverse=1) }}" data-toggle="tooltip"
+                                title="Sort by descending symbol">
+                                <i class="fas fa-sort-alpha-up"></i>
+                            </a>
+
+                        </th>
+
+                        <th>
+
+                            <a href="{{ url_for('get_favorites', sortby='price') }}" data-toggle="tooltip"
+                                title="Sort by ascending price">
+                                <i class="fas fa-sort-numeric-down"></i>
+                            </a>
+
+                            Price (USD)
+
+                            <a href="{{ url_for('get_favorites', sortby='price', reverse=1) }}" data-toggle="tooltip"
+                                title="Sort by descending price">
+                                <i class="fas fa-sort-numeric-up"></i>
+                            </a>
+
+                        </th>
+
+                        <th>
+                            <a href="{{ url_for('get_favorites', sortby='volume') }}" data-toggle="tooltip"
+                                title="Sort by ascending volume">
+                                <i class="fas fa-sort-numeric-down"></i>
+                            </a>
+
+                            Volume
+
+                            <a href="{{ url_for('get_favorites', sortby='volume', reverse=1) }}"
+                                data-toggle="tooltip" title="Sort by descending volume">
+                                <i class="fas fa-sort-numeric-up"></i>
+                            </a>
+
+                        </th>
+
+                        <th>
+
+                            <a href="{{ url_for('get_favorites', sortby='timestamp') }}" data-toggle="tooltip"
+                                title="Sort by ascending last trade time">
+                                <i class="fas fa-sort-numeric-down"></i>
+                            </a>
+
+                            Last trade
+
+                            <a href="{{ url_for('get_favorites', sortby='timestamp', reverse=1) }}"
+                                data-toggle="tooltip" title="Sort by descending last trade time">
+                                <i class="fas fa-sort-numeric-up"></i>
+                            </a>
+
+                        </th>
+
+                        <th>Favorite</th>
+
+                    </tr>
+
+                </thead>
+
+                {% for stock in stocks | sort(attribute=sort_by, reverse=should_reverse) %}
+                <tr style="text-align:center">
+                    <td>{{loop.index}}</td>
+                    <td>
+                        <a href="{{ url_for('get_stock_info', symbol=stock.symbol) }}">{{stock.symbol}}</a>
+                    </td>
+                    <td>{{stock.price}}</td>
+                    <td>{{stock.volume}}</td>
+                    <td>{{stock.timestamp}}</td>
+                    <td>
+                        <div class="favorite text-center">
+
+                            <input type="checkbox" id="star{{loop.index}}" value="1"
+                                onclick="updateFavorites('{{stock.symbol}}')"
+                                {% if stock.is_favorite %}checked{% else %}{% endif %} />
+
+                            <label for="star{{loop.index}}"></label>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+
+        </div>
+
+    </div>
+
+    {% else %}
+
+    <div class="row justify-content-center">
+        <div class="col-4 alert alert-danger mt-5 p-5" style="text-align:center">
+            <h4>No stocks in your favorites!</h4>
+            Go back <a href="{{ url_for('index') }}">home</a> to add stocks to your favorites list.
+        </div>
+    </div>
+
+    {% endif %}
+
+    {{ bootstrap.load_js() }}
+
+    <script>
+
+        function updateFavorites(selectedSymbol) {
+            // send a request, but don't refresh page
+            xhttp = new XMLHttpRequest();
+            requestUrl = `{{ url_for('update_favorites')}}?symbol=${selectedSymbol}`
+            xhttp.open("GET", requestUrl, true);
+            xhttp.send();
+        }
+
+        $(document).ready(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+        
+    </script>
+
+</body>

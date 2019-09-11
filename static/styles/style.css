@@ -1,0 +1,57 @@
+body {
+  padding: 0;
+  margin: 0;
+  background: #ececf0;
+}
+
+.bodyCard {
+  background: white;
+  width: 80%;
+  margin: 5%;
+  margin-left: 10%;
+  margin-right: 10%;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.favorite input {
+  border: 0;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  position: absolute !important;
+  clip: rect(1px 1px 1px 1px);
+  clip: rect(1px, 1px, 1px, 1px);
+  opacity: 0;
+}
+
+.favorite label {
+  color: #C8C8C8;
+}
+
+.favorite label:before {
+  content: "\f005";
+  font-family: FontAwesome;
+  display: inline-block;
+  font-size: 1.5em;
+  color: #ccc;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+}
+
+.favorite input:checked ~ label:before {
+  color: #FFC107;
+}
+
+.favorite label:hover ~ label:before {
+  color: #f1da92;
+}
+
+.favorite label:hover:before {
+  color: #FFC107;
+}
+
+th {
+  white-space: nowrap
+}

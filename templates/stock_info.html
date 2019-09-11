@@ -1,0 +1,75 @@
+<head>
+    {{ bootstrap.load_css() }}
+    <title>{{stock.symbol}} Details - Stocks Portal</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/style.css') }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+</head>
+
+<body>
+
+    {% include "navbar.html" %}
+
+    <div class="bodyCard shadow p-5">
+
+        <p class="text-muted">{{stock.symbol}} on {{stock['latest trading day']}}</p>
+
+        <span class="float-right favorite">
+
+            <input type="checkbox" id="st1" value="1" onclick="updateFavorites('{{stock.symbol}}')"
+                {% if stock.is_favorite %}checked{% else %}{% endif %} />
+            <label class="m-4" for="st1"></label>
+
+            <a href="{{ url_for('get_stock_graph', symbol=stock.symbol) }}" class="btn btn-primary">
+                View graph
+            </a>
+
+        </span>
+
+        <p>
+            <span style="font-size: 1.2em">{{stock.price}}</span>
+            <small>
+                USD
+                <span class="{{'text-success' if stock['change']|float > 0 else 'text-danger'}}">
+                    {{stock.change}} ({{stock['change percent']}})
+                </span> 
+            </small>
+        </p>
+            
+        <table class="table" style="width:100%">
+            <tr>
+                <td class="font-weight-bold">Open</td>
+                <td>{{stock.open}}</td>
+                <td class="font-weight-bold">High</td>
+                <td>{{stock.high}}</td>
+            </tr>
+
+            <tr>
+                <td class="font-weight-bold">Low</td>
+                <td>{{stock.low}}</td>
+                <td class="font-weight-bold">Volume</td>
+                <td>{{stock.volume}}</td>
+            </tr>
+
+            <tr>
+                <td class="font-weight-bold">Prev close</td>
+                <td>{{stock['previous close']}}</td>
+                <td></td>
+                <td></td>
+            </tr>
+        </table>
+    </div>
+
+    {{ bootstrap.load_js() }}
+
+    <script>
+        function updateFavorites(selectedSymbol) {
+            // send a request, but don't refresh page
+            xhttp = new XMLHttpRequest();
+            requestUrl = `{{ url_for('update_favorites')}}?symbol=${selectedSymbol}`
+            xhttp.open("GET", requestUrl, true);
+            xhttp.send();
+        }
+
+    </script>
+    
+</body>
