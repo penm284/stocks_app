@@ -1,6 +1,6 @@
 1. Run the following in the terminal:
-    a. pip install flask
-    b. pip install bootstrap-flask
+    a. pip install flask(use sudo if there are permissions on your laptop)
+    b. pip install bootstrap-flask(use sudo if there are permissions on your laptop)
 
 2. Now run the following in the project folder via terminal:
     FLASK_APP=main.py flask run

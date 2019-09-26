@@ -8,7 +8,7 @@ app = Flask(__name__)
 # bootstrap4 is used for styling our front-end
 bootstrap = Bootstrap(app)
 
-# ============================================  Helper functions ====================================================
+                                    # Helper functions
 
 # this function checks if a given symbol is in user's favorites folder
 # return true if symbol is in favorites else it returns false
@@ -23,7 +23,7 @@ def in_favorites(symbol):
     # else we return false
     return True if symbol in current_favorites else False
 
-# update_keys function is used to remove the unnecessary indexes in the keys of the returned objects from the API. 
+# update_keys function is used to remove the unnecessary indexes in the keys of the returned objects from the API.
 def update_keys(stock, characters_to_remove):
 
     # iterate over each key of the stock object. We have parsed the object to a list, since a list can be mutated
@@ -54,7 +54,7 @@ def update_keys(stock, characters_to_remove):
         stock[new_key] = value
 
     return stock
-    
+
 # this function returns the basic data for the stocks provided in the list
 def get_stocks(symbols):
     # the API expects symbols to be comma separated, such as AAPL,MSFT
@@ -82,7 +82,7 @@ def get_stocks(symbols):
 
     return stocks
 
-# ============================================  ROUTES ==========================================================
+                                            #ROUTES
 
 @app.route("/")
 def index():
@@ -254,4 +254,4 @@ def get_news():
 # register a handler for API limit (5 requests per minute)
 @app.errorhandler(Exception)
 def exception_handler(error):
-    return render_template('error.html', err_msg='API overwhelmed. Please wait a bit between requests.')
+    return render_template('error.html', err_msg='API overwhelmed. Please wait for a while between requests.')

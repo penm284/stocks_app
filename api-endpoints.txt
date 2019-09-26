@@ -1,8 +1,0 @@
-To check data for a given symbol:
-https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=PUT_SYMBOL_HERE&apikey=xxx
-
-To search:
-https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=SEARCH_QUERY_HERE&apikey=xxx
-
-To get data for multiple stocks:
-https://www.alphavantage.co/query?function=BATCH_STOCK_QUOTES&apikey=xxx&symbols=SYMBOL1,SYMBOL2,SYMBOL3
